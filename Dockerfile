@@ -1,12 +1,12 @@
-FROM alpine:latest
+FROM debian:buster-slim
 
 # Upgrade packages
-RUN apk -U upgrade
+RUN apt update && apt -y upgrade
 
 # Install OpenSSH server and Gitolite
 # Unlock the automatically-created git user
 RUN set -x \
- && apk add --no-cache gitolite openssh \
+ && apt install --no-cache gitolite openssh \
  && passwd -u git
 
 # Volume used to store SSH host keys, generated on first run
