@@ -1,4 +1,7 @@
-FROM alpine:3.10
+FROM alpine:latest
+
+# Upgrade packages
+RUN apk -U upgrade
 
 # Install OpenSSH server and Gitolite
 # Unlock the automatically-created git user
