@@ -12,7 +12,7 @@ RUN apt-get update && apt-get -y upgrade
 # Install OpenSSH server and Gitolite
 # Unlock the automatically-created git user
 RUN set -x \
- && apt-get install --no-cache gitolite openssh \
+ && apt-get install gitolite openssh \
  && passwd -u git
 
 # Volume used to store SSH host keys, generated on first run
