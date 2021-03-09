@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:buster
 
 # Change Package sources
 RUN sed -i 's/^\([^#]\)/#\1/' /etc/apt/sources.list
