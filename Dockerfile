@@ -1,12 +1,12 @@
 FROM debian:buster-slim
 
 # Upgrade packages
-RUN apt update && apt -y upgrade
+RUN apt-get update && apt-get -y upgrade
 
 # Install OpenSSH server and Gitolite
 # Unlock the automatically-created git user
 RUN set -x \
- && apt install --no-cache gitolite openssh \
+ && apt-get install --no-cache gitolite openssh \
  && passwd -u git
 
 # Volume used to store SSH host keys, generated on first run
