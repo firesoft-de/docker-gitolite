@@ -1,5 +1,11 @@
 FROM debian:buster-slim
 
+# Change Package sources
+RUN sed -i 's/^\([^#]\)/#\1/' /etc/apt/sources.list
+RUN sed -i '/^#deb .*security.debian.org/s/^#//' /etc/apt/sources.list
+RUN echo "deb http://ftp.halifax.rwth-aachen.de/debian/ buster main" >> /etc/apt/sources.list
+RUN echo "deb http://ftp.halifax.rwth-aachen.de/debian/ buster-updates main" >> /etc/apt/sources.list
+
 # Upgrade packages
 RUN apt-get update && apt-get -y upgrade
 
