@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM alpine:latest
 
 # Change Package sources
 RUN sed -i 's/^\([^#]\)/#\1/' /etc/apt/sources.list
@@ -7,12 +7,12 @@ RUN echo "deb http://ftp.halifax.rwth-aachen.de/debian/ buster main" >> /etc/apt
 RUN echo "deb http://ftp.halifax.rwth-aachen.de/debian/ buster-updates main" >> /etc/apt/sources.list
 
 # Upgrade packages
-RUN apt-get update && apt-get -y upgrade
+RUN apk update && apk upgrade
 
 # Install OpenSSH server and Gitolite
 # Unlock the automatically-created git user
 RUN set -x \
- && apt-get -y install gitolite3 openssh-server \
+ && apk add --no-cache gitolite openssh \
  && passwd -u git
 
 # Volume used to store SSH host keys, generated on first run
