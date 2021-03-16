@@ -10,10 +10,12 @@ RUN echo "deb http://ftp.halifax.rwth-aachen.de/debian/ buster-updates main" >> 
 RUN apt-get update && apt-get -y upgrade
 
 # Install OpenSSH server and Gitolite
-# Unlock the automatically-created git user
-RUN set -x \
- && apt-get -y install gitolite3 openssh-server \
- && passwd -u git
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN echo 'gitolite3 gitolite3/adminkey string ssh-ed25519 HIER KEY EINFÜGEN!!!' | debconf-set-selections && \
+  echo 'gitolite3 gitolite3/gituser string git' | debconf-set-selections && \
+   apt-get -y install gitolite3 openssh-server
 
 # Volume used to store SSH host keys, generated on first run
 VOLUME /etc/ssh/keys

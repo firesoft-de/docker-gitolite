@@ -20,7 +20,10 @@ fi
 # Fix permissions at every startup
 chown -R git:git ~git
 
-# Setup gitolite admin  
+# Create sshd directory to stop sshd from complaining
+mkdir /run/sshd
+
+# Setup gitolite admin
 if [ ! -f ~git/.ssh/authorized_keys ]; then
   if [ -n "$SSH_KEY" ]; then
     [ -n "$SSH_KEY_NAME" ] || SSH_KEY_NAME=admin
@@ -35,7 +38,7 @@ if [ ! -f ~git/.ssh/authorized_keys ]; then
   fi
 # Check setup at every startup
 else
-  su - git -c "gitolite setup"
+  su - gitolite3 -c "gitolite setup"
 fi
 
 exec "$@"
