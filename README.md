@@ -1,3 +1,22 @@
+# About
+
+This is an improved version of the original docker-gitolite container by jgiannuzzi. This version focus on security by implementing the following mechanisms:
+
+## Build on the system
+The biggest flaw of the original container is the massive lack of updates. In March 2021 the last build of the container on docker hub was two years old. This means you're running a potential critical system (you're sources stay here!) with a two year old system.
+
+Think that this is not a problem? Ok, would you use a two years old VM or vServer for hosting your sources?
+
+![grafik](https://user-images.githubusercontent.com/34716031/111921604-b10b4c80-8a95-11eb-9cee-4c2ba1609103.png)
+
+So I switched to not providing a prebuild container and focused on easy building on the users machine. Also I provided an update script to use with cron. So you're container will be updated on a regular base.
+
+## Additional
+
+I also switched to debian:buster-slim and the tag latest. 
+
+# =====Original=====
+
 # Docker image for Gitolite
 
 This image allows you to run a git server in a container with OpenSSH and [Gitolite](https://github.com/sitaramc/gitolite#readme).
