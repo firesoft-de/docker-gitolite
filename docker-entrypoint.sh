@@ -18,17 +18,17 @@ if [ "${1}" = 'sshd' ]; then
 fi
 
 # Fix permissions at every startup
-chown -R git:git ~git
+chown -R $SSH_USER:$SSH_USER ~$SSH_USER
 
 # Create sshd directory to stop sshd from complaining
 mkdir /run/sshd
 
 # Setup gitolite admin
-if [ ! -f ~git/.ssh/authorized_keys ]; then
+if [ ! -f ~$SSH_USER/.ssh/authorized_keys ]; then
   if [ -n "$SSH_KEY" ]; then
     [ -n "$SSH_KEY_NAME" ] || SSH_KEY_NAME=admin
     echo "$SSH_KEY" > "/tmp/$SSH_KEY_NAME.pub"
-    su - git -c "gitolite setup -pk \"/tmp/$SSH_KEY_NAME.pub\""
+    su - $SSH_USER -c "gitolite setup -pk \"/tmp/$SSH_KEY_NAME.pub\""
     rm "/tmp/$SSH_KEY_NAME.pub"
   else
     echo "You need to specify SSH_KEY on first run to setup gitolite"
@@ -38,7 +38,7 @@ if [ ! -f ~git/.ssh/authorized_keys ]; then
   fi
 # Check setup at every startup
 else
-  su - gitolite3 -c "gitolite setup"
+  su - $SSH_USER -c "gitolite setup"
 fi
 
 exec "$@"

@@ -1,57 +1,54 @@
 #!/bin/bash
 
-# while getopts ":d:k:n:" opt; do
-#   case $opt in
-#     d) DEBUG="$OPTARG"
-#     ;;
-#     k) SSH_KEY="$OPTARG"
-#     ;;
-#     n) SSH_KEY_NAME="$OPTARG"
-#     ;;
-#   esac
-# done
+DEFAULTCOLOR='\033[0m'
+RED='\033[0;31m'
 
-if [ "$DEBUG" = true ]; then
-  echo "Debug mode"
-  echo "SSH_KEY $SSH_KEY"
-  echo "SSH_KEY_NAME $SSH_KEY_NAME"
-fi
+function echo_custom () {
+  if [ "$DOCKER_GITOLITE_DEBUG" = true ]; then
+  	echo -e "$*"
+  fi
+}
 
-echo "Stoppe container..."
+echo_custom ${RED}"Debug mode is on"
+echo_custom "DOCKER_GITOLITE_SSH_KEY $DOCKER_GITOLITE_SSH_KEY"
+echo_custom "DOCKER_GITOLITE_SSH_KEY_NAME $DOCKER_GITOLITE_SSH_KEY_NAME"
+echo_custom "DOCKER_GITOLITE_USER $DOCKER_GITOLITE_USER"${DEFAULTCOLOR}
+echo_custom
+
+echo_custom "Stoppe container..."
 docker stop gitolite
-echo "Container gestoppt!"
-echo
+echo_custom "Container gestoppt!"
+echo_custom
 
-echo "Lösche container..."
+echo_custom "Lösche container..."
 docker rm gitolite
-echo "Container gelöscht!"
-echo
+echo_custom "Container gelöscht!"
+echo_custom
 
-echo "git pull..."
+echo_custom "git pull..."
 #cd docker-gitolite
 git pull
 cd ..
-echo "git pull fertig!"
-echo
+echo_custom "git pull fertig!"
+echo_custom
 
-echo "Container bauen..."
+echo_custom "Container bauen..."
 
-if [ $DEBUG = true ]; then
-  docker build --no-cache=true -t gitolite:local docker-gitolite
+if [ $DOCKER_GITOLITE_DEBUG = true ]; then
+  docker build --build-arg DOCKER_GITOLITE_SSH_KEY --build-arg DOCKER_GITOLITE_USER --no-cache=true -t gitolite:local docker-gitolite
 else
-  echo "NON"
-  docker build -t gitolite:local docker-gitolite
+  docker build --build-arg DOCKER_GITOLITE_SSH_KEY --build-arg DOCKER_GITOLITE_USER -q -t gitolite:local docker-gitolite
 fi
 
 cd docker-gitolite
 
-echo "Container gebaut!"
-echo
+echo_custom "Container gebaut!"
+echo_custom
 
-echo "Starte neuen container..."
+echo_custom "Starte neuen container..."
 ./run_gitolite.sh
-echo "Container gestartet!"
+echo_custom "Container gestartet!"
 
-echo
-echo
-echo "Update durchgeführt!"
+echo_custom
+echo_custom
+echo_custom "Update durchgeführt!"
