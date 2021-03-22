@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM alpine:latest
 
 # Define environment variables (lifecycle restricted to build process)
 ARG DOCKER_GITOLITE_SSH_KEY="null"
@@ -11,7 +11,7 @@ RUN echo "deb http://ftp.halifax.rwth-aachen.de/debian/ buster main" >> /etc/apt
 RUN echo "deb http://ftp.halifax.rwth-aachen.de/debian/ buster-updates main" >> /etc/apt/sources.list
 
 # Upgrade packages
-RUN apt-get update && apt-get -y upgrade
+RUN apk update && apk upgrade
 
 # Install OpenSSH server and Gitolite
 
